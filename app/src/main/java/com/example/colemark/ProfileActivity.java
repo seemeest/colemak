@@ -21,6 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import cz.msebera.android.httpclient.Header;
@@ -33,9 +36,9 @@ public class ProfileActivity extends AppCompatActivity {
     static TextView surName;
 
 
-    static ListView[] events=new ListView[3];
-    static ListView[] gifts=new ListView[3];
-    static ListView[] groups=new ListView[3];
+    static ListView[] events=new ListView[4];
+    static ListView[] gifts=new ListView[4];
+    static ListView[] groups=new ListView[4];
 
 
     @Override
@@ -129,20 +132,56 @@ public class ProfileActivity extends AppCompatActivity {
                     } catch (JSONException ignored) {
                         response=new JSONArray();
                     }
-                    Button[] n={new Button(ProfileActivity.this)};
 
-                    for (int i=0;i!=response.length();i++){
-                        events[i].setAdapter(new ArrayAdapter<Button>(ProfileActivity.this, android.R.layout.simple_list_item_1,n));
-                    }
-                    for (int i=0;i!=3;i++){
-                        n[0].setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                System.out.println(1);
+
+                    for (int y=0;y!=4;y++){
+                        ArrayList<String> items= new ArrayList<>();
+                        for (int i=0;i!=response.length();i++){
+                            JSONObject object = new JSONObject();
+
+                            try{
+                                object=response.getJSONObject(i);
+
+//                                new SimpleDateFormat("yyyy-MM-dd");
+
+                                //                                        object.getString("description"),
+                                //
+                                //                                        object.getString("time_end").replace("T"," ").substring(0,object.getString("time_end").replace("T"," ").indexOf(".")),
+                                //                                        object.getString("group_name")
+                                items.add(object.getString("name"));
+//                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ProfileActivity.this,
+//                                        android.R.layout.simple_list_item_1, items);
+//                                events[0].setAdapter(adapter);
+                            } catch (Exception err){
+
                             }
-                        });
 
+
+
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ProfileActivity.this,
+                                        android.R.layout.simple_list_item_1, items);
+                        events[0].setAdapter(adapter);
                     }
+
+
+//                    List<String> n=new ArrayList<>();
+//                    for (i in response.)
+//                    for (int i=0;i!=response.length();i++){
+//                       n.add(response.getJSONObject(i).toString());
+//                    }
+//                    n.add
+//                    events[i-1].setAdapter(new ArrayAdapter<String>(ProfileActivity.this, android.R.layout.simple_list_item_1,n));
+
+//                    for (int i=0;i!=3;i++){
+//                        n[0].setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                System.out.println(1);
+//                            }
+//                        });
+//
+//                    }
 
 //                    try {
 //                        ProfileActivity.name.setText(response.getString("name"));
